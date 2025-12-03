@@ -6,17 +6,18 @@ import { sendResponse } from "../../utils/sendResponse";
 import { JwtPayload } from "jsonwebtoken";
 import { EventService } from "./event.service";
 import { Types } from "mongoose";
+import { uploadToCloudinary } from "../../utils/uploadToCloudinary";
 
 const createEvent = catchAsync(async (req: Request, res: Response) => {
   const decoded = req.user as JwtPayload;
-  //   const hostId = decoded.userId;
+    const hostId = decoded.userId;
 
-  // Handle image upload if present
-  //   let eventImage;
-  //   if (req.file) {
-  //     const result = await uploadToCloudinary(req.file.buffer, 'events-platform/events');
-  //     eventImage = result.secure_url;
-  //   }
+  
+    let eventImage;
+    if (req.file) {
+      const result = await uploadToCloudinary(req.file.buffer, 'events-platform/events');
+      eventImage = result.secure_url;
+    }
 
   const eventData = {
     name: req.body.name,
@@ -24,7 +25,7 @@ const createEvent = catchAsync(async (req: Request, res: Response) => {
     description: req.body.description,
     date: req.body.date,
     time: req.body.time,
-    //   image
+    eventImage,
     minParticipants: Number(req.body.minParticipants),
     maxParticipants: Number(req.body.maxParticipants),
 
