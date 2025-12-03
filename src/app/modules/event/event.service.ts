@@ -166,11 +166,20 @@ const leaveEvent = async (eventId: string, userId: string) => {
   return { message: 'Left event successfully' };
 };
 
+const getHostedEvents = async (userId: string) => {
+  const events = await EventModel.find({ host: userId, isActive: true })
+    .populate('participants', 'fullName profileImage')
+    .sort({ date: 1 });
+
+  return events;
+};
+
 export const EventService = {
   createEvent,
   getAllEvents,
   getEventById,
   updateEvent,
   joinEvent,
-  leaveEvent
+  leaveEvent,
+  getHostedEvents,
 };

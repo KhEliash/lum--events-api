@@ -118,6 +118,18 @@ const leaveEvent = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getHostedEvents = catchAsync(async (req: Request, res: Response) => {
+  const decoded = req.user as JwtPayload;
+  const result = await EventService.getHostedEvents(decoded.userId);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Hosted events retrieved successfully',
+    data: result,
+  });
+});
+
 export const EventController = {
   createEvent,
   getAllEvents,
@@ -125,4 +137,5 @@ export const EventController = {
   updateEvent,
   joinEvent,
   leaveEvent,
+  getHostedEvents,
 };

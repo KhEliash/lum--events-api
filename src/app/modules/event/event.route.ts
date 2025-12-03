@@ -15,13 +15,14 @@ router.post(
   EventController.createEvent
 );
 router.get("/all", EventController.getAllEvents);
-router.get("/:id", EventController.getEventById);
+router.get('/hosted', checkAuth(Role.HOST), EventController.getHostedEvents);
 router.patch(
   "/:id",
   checkAuth(Role.HOST),
   upload.single("image"),
   EventController.updateEvent
 );
+router.get("/:id", EventController.getEventById);
 router.post('/join/:id/', checkAuth(Role.USER), EventController.joinEvent);
 router.delete('/leave/:id', checkAuth(Role.USER), EventController.leaveEvent);
 
