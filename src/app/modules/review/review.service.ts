@@ -73,8 +73,33 @@ const getEventReviews = async (eventId: string) => {
   return reviews;
 };
 
+const updateReview = async (reviewId: string, userId: string, updateData: any) => {
+  const review = await Review.findById(reviewId);
+
+  if (!review) {
+    throw new AppError(404, 'Review not found');
+  }
+
+  if (review.reviewer.toString() !== userId) {
+    throw new AppError(403, 'You are not authorized to update this review');
+  }
+
+
+
+  const updatedReview = await Review.findByIdAndUpdate(reviewId, updateData, {
+    new: true,
+    runValidators: true,
+  }).populate([
+    { path: 'reviewer', select: 'fullName profileImage' },
+    { path: 'event', select: 'name type date' },
+  ]);
+
+  return updatedReview;
+};
+
 export const ReviewService = {
   createReview,
   getHostReviews,
   getEventReviews,
+  updateReview,
 };

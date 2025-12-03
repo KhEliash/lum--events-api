@@ -48,8 +48,23 @@ const getEventReviews = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateReview = catchAsync(async (req: Request, res: Response) => {
+  const { id:reviewId } = req.params;
+  const decoded = req.user as JwtPayload;
+
+  const result = await ReviewService.updateReview(reviewId,decoded.userId, req.body);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Review updated successfully',
+    data: result,
+  });
+});
+
 export const ReviewController = {
   createReview,
   getHostReviews,
   getEventReviews,
+  updateReview,
 };
