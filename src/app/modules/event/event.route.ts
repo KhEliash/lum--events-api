@@ -8,12 +8,12 @@ const router = Router();
 
 const upload = multer();
 
- 
 router.post(
   "/create",
   checkAuth(Role.HOST),
   upload.single("image"),
   EventController.createEvent
 );
+router.get("/all", EventController.getAllEvents);
 
 export const EventRoutes = router;

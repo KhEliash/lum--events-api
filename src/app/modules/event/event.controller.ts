@@ -35,7 +35,6 @@ const createEvent = catchAsync(async (req: Request, res: Response) => {
 
     host: new Types.ObjectId(decoded.userId as string),
   };
-  console.log(eventData);
 
   const result = await EventService.createEvent(eventData);
 
@@ -47,7 +46,19 @@ const createEvent = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getAllEvents = catchAsync(async (req: Request, res: Response) => {
+  const result = await EventService.getAllEvents(req.query);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Events retrieved successfully",
+    data: result.events,
+    meta: result.meta,
+  });
+});
+
 export const EventController = {
-  //   createUser,
   createEvent,
+  getAllEvents,
 };
