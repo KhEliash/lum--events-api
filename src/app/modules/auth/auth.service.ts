@@ -58,6 +58,7 @@ const logoutUser = async (res: Response): Promise<void> => {
   });
 };
 
+
 export const AuthServices = {
   credentialLogin,
   logoutUser,

@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import AppError from "../../errorHelpers/AppError";
 import { IUser } from "./user.interface";
 import { User } from "./user.model";
 import httpStatus from "http-status-codes";
 import bcryptjs from "bcryptjs";
 import { envVars } from "../../config/env";
- 
+
 const createUser = async (payload: IUser) => {
   const { email, password, role, ...rest } = payload;
 
@@ -53,37 +52,55 @@ const createUser = async (payload: IUser) => {
 //   };
 // };
 
-const blockUser = async (params: any) => {
-  const { userId } = params;
-  const user = await User.findByIdAndUpdate(
-    userId,
-    { isBlocked: true },
-    { new: true }
-  );
-
-  if (!user) {
-    throw new Error("User not found");
-  }
-  return user;
+const getMe = async (userId: string) => {
+  const user = await User.findById(userId).select("-password");
+  return {
+    data: user,
+  };
 };
-const unBlockUser = async (params: any) => {
-  const { userId } = params;
-  const user = await User.findByIdAndUpdate(
-    userId,
-    { isBlocked: false },
-    { new: true }
-  );
 
-  if (!user) {
-    throw new Error("User not found");
-  }
-  return user;
+const getAllUsers = async () => {
+  const users = await User.find().select("password");
+  const totalUsers = await User.countDocuments();
+
+  return {
+    data: users,
+    meta: { total: totalUsers },
+  };
 };
+
+// const blockUser = async (params: any) => {
+//   const { userId } = params;
+//   const user = await User.findByIdAndUpdate(
+//     userId,
+//     { isBlocked: true },
+//     { new: true }
+//   );
+
+//   if (!user) {
+//     throw new Error("User not found");
+//   }
+//   return user;
+// };
+// const unBlockUser = async (params: any) => {
+//   const { userId } = params;
+//   const user = await User.findByIdAndUpdate(
+//     userId,
+//     { isBlocked: false },
+//     { new: true }
+//   );
+
+//   if (!user) {
+//     throw new Error("User not found");
+//   }
+//   return user;
+// };
 
 export const UserService = {
   createUser,
-  // getMe,
-  blockUser,
-  unBlockUser,
+  getMe,
+  getAllUsers,
+  // blockUser,
+  // unBlockUser,
   // updateProfile,
 };

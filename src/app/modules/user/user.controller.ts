@@ -43,36 +43,62 @@ const createUser = catchAsync(
 //   });
 // };
 
-const blockUser = catchAsync(
+const getMe = async (req: Request, res: Response) => {
+  const decodedToken = req.user as JwtPayload;
+  const result = await UserService.getMe(decodedToken.userId);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.CREATED,
+    message: "Profile Retrieved Successfully",
+    data: result.data,
+  });
+};
+
+const getAllUsers = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await UserService.blockUser(req.params);
+    const result = await UserService.getAllUsers();
 
     sendResponse(res, {
       statusCode: httpStatus.CREATED,
       success: true,
-      message: "Blocked Successfully",
-      data: result,
+      message: "All Users Retrieved Successfully",
+      data: result.data,
+      meta: result.meta,
     });
   }
 );
-const unBlockUser = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const result = await UserService.unBlockUser(req.params);
 
-    sendResponse(res, {
-      statusCode: httpStatus.CREATED,
-      success: true,
-      message: "UnBlocked Successfully",
-      data: result,
-    });
-  }
-);
+// const blockUser = catchAsync(
+//   async (req: Request, res: Response, next: NextFunction) => {
+//     const result = await UserService.blockUser(req.params);
+
+//     sendResponse(res, {
+//       statusCode: httpStatus.CREATED,
+//       success: true,
+//       message: "Blocked Successfully",
+//       data: result,
+//     });
+//   }
+// );
+// const unBlockUser = catchAsync(
+//   async (req: Request, res: Response, next: NextFunction) => {
+//     const result = await UserService.unBlockUser(req.params);
+
+//     sendResponse(res, {
+//       statusCode: httpStatus.CREATED,
+//       success: true,
+//       message: "UnBlocked Successfully",
+//       data: result,
+//     });
+//   }
+// );
 
 export const UserController = {
   createUser,
-  // getMe,
-
-  blockUser,
-  unBlockUser,
+  getMe,
+  getAllUsers,
+  // blockUser,
+  // unBlockUser,
   // updateProfile
 };
