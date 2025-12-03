@@ -23,7 +23,6 @@ const createReview = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-
 const getHostReviews = catchAsync(async (req: Request, res: Response) => {
   const { hostId } = req.params;
   const result = await ReviewService.getHostReviews(hostId, req.query);
@@ -31,13 +30,26 @@ const getHostReviews = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: 'Reviews retrieved successfully',
+    message: "Reviews retrieved successfully",
     data: result.reviews,
     meta: result.meta,
   });
 });
 
+const getEventReviews = catchAsync(async (req: Request, res: Response) => {
+  const { eventId } = req.params;
+  const result = await ReviewService.getEventReviews(eventId);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Reviews retrieved successfully",
+    data: result,
+  });
+});
+
 export const ReviewController = {
   createReview,
-  getHostReviews
+  getHostReviews,
+  getEventReviews,
 };

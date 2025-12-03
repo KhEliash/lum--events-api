@@ -47,8 +47,8 @@ const getHostReviews = async (hostId: string, query: any) => {
   const skip = (page - 1) * limit;
 
   const reviews = await Review.find({ host: hostId })
-    .populate('reviewer', 'fullName profileImage')
-    .populate('event', 'name type date')
+    .populate("reviewer", "fullName profileImage")
+    .populate("event", "name type date")
     .skip(skip)
     .limit(parseInt(limit))
     .sort({ createdAt: -1 });
@@ -65,7 +65,16 @@ const getHostReviews = async (hostId: string, query: any) => {
   };
 };
 
+const getEventReviews = async (eventId: string) => {
+  const reviews = await Review.find({ event: eventId })
+    .populate("reviewer", "fullName profileImage")
+    .sort({ createdAt: -1 });
+
+  return reviews;
+};
+
 export const ReviewService = {
   createReview,
-  getHostReviews
+  getHostReviews,
+  getEventReviews,
 };
