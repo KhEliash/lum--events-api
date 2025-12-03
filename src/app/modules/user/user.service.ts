@@ -1,9 +1,11 @@
 import AppError from "../../errorHelpers/AppError";
-import { IUser } from "./user.interface";
+import { IUser, Role } from "./user.interface";
 import { User } from "./user.model";
 import httpStatus from "http-status-codes";
 import bcryptjs from "bcryptjs";
 import { envVars } from "../../config/env";
+import { EventModel } from "../event/event.model";
+import { Review } from "../review/review.model";
 
 const createUser = async (payload: IUser) => {
   const { email, password, role, ...rest } = payload;
@@ -80,52 +82,79 @@ const getAllUsers = async (page: number, limit: number) => {
   };
 };
 
-// Get user profile by ID
-// const getUserById = async (userId: string) => {
-//   const user = await User.findById(userId);
+const getUserById = async (userId: string) => {
+  const user = await User.findById(userId);
 
-//   if (!user) {
-//     throw new AppError(404, 'User not found');
-//   }
+  if (!user) {
+    throw new AppError(404, "User not found");
+  }
 
-//   // Get hosted events if user is a host
-//   let hostedEvents = [];
-//   if (user.role === Role.HOST) {
-//     hostedEvents = await Event.find({ host: userId, isActive: true })
-//       .select('name type date location joiningFee currentParticipants maxParticipants status')
-//       .limit(5);
-//   }
+  // Get hosted events if user is a host
+  let hostedEvents: any = [];
+  if (user.role === Role.HOST) {
+    hostedEvents = await EventModel.find({ host: userId, isActive: true })
+      .select(
+        "name type date location joiningFee currentParticipants maxParticipants status"
+      )
+      .limit(5);
+  }
 
-//   // Get joined events
-//   const joinedEvents = await Event.find({
-//     participants: userId,
-//     isActive: true,
-//   })
-//     .select('name type date location joiningFee status')
-//     .limit(5);
+  // Get joined events
+  const joinedEvents = await EventModel.find({
+    participants: userId,
+    isActive: true,
+  })
+    .select("name type date location joiningFee status")
+    .limit(5);
 
-//   // Get reviews if host
-//   let reviews = [];
-//   if (user.role === Role.HOST) {
-//     reviews = await Review.find({ host: userId })
-//       .populate('reviewer', 'fullName profileImage')
-//       .limit(5)
-//       .sort({ createdAt: -1 });
-//   }
+  // Get reviews if host
+  let reviews :any = [];
+  if (user.role === Role.HOST) {
+    reviews = await Review.find({ host: userId })
+      .populate("reviewer", "fullName profileImage")
+      .limit(5)
+      .sort({ createdAt: -1 });
+  }
 
-//   return {
-//     user,
-//     hostedEvents,
-//     joinedEvents,
-//     reviews,
-//   };
-// };
+  return {
+    user,
+    hostedEvents,
+    joinedEvents,
+    reviews,
+  };
+};
 
- 
+ const deactivateUser = async (userId: string) => {
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new AppError(404, 'User not found');
+  }
+
+  user.isActive = false;
+  await user.save();
+
+  return { message: 'User deactivated successfully' };
+};
+ const activateUser = async (userId: string) => {
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new AppError(404, 'User not found');
+  }
+
+  user.isActive = true;
+  await user.save();
+
+  return { message: 'User activated successfully' };
+};
+
 export const UserService = {
   createUser,
   getMe,
   getAllUsers,
-  // getUserById, 
+  getUserById,
   updateProfile,
+  deactivateUser,
+  activateUser,
 };

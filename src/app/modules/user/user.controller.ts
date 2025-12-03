@@ -47,17 +47,17 @@ const getMe = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-// const getUserProfile = catchAsync(async (req: Request, res: Response) => {
-//   const { id } = req.params;
-//   const result = await UserService.getUserById(id);
+const getUserProfile = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await UserService.getUserById(id);
 
-//   sendResponse(res, {
-//     statusCode: 200,
-//     success: true,
-//     message: 'User profile retrieved successfully',
-//     data: result,
-//   });
-// });
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'User profile retrieved successfully',
+    data: result,
+  });
+});
 
 const getAllUsers = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -75,12 +75,35 @@ const getAllUsers = catchAsync(
   }
 );
 
- 
+ const deactivateUser = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await UserService.deactivateUser(id);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: result.message,
+    data: null
+  });
+});
+ const activateUser = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await UserService.activateUser(id);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: result.message,
+    data: null
+  });
+});
 
 export const UserController = {
   createUser,
   getMe,
   getAllUsers,
-  // getUserProfile, 
+  getUserProfile, 
   updateProfile,
+  deactivateUser ,
+  activateUser ,
 };
