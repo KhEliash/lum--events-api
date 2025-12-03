@@ -125,7 +125,7 @@ const getHostedEvents = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: 'Hosted events retrieved successfully',
+    message: "Hosted events retrieved successfully",
     data: result,
   });
 });
@@ -137,7 +137,21 @@ const getJoinedEvents = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: 'Joined events retrieved successfully',
+    message: "Joined events retrieved successfully",
+    data: result,
+  });
+});
+
+const deleteEvent = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const decoded = req.user as JwtPayload;
+
+  const result = await EventService.deleteEvent(id, decoded.userId);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Event deleted successfully",
     data: result,
   });
 });
@@ -150,5 +164,6 @@ export const EventController = {
   joinEvent,
   leaveEvent,
   getHostedEvents,
-  getJoinedEvents
+  getJoinedEvents,
+  deleteEvent,
 };

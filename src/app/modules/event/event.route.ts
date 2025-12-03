@@ -15,16 +15,17 @@ router.post(
   EventController.createEvent
 );
 router.get("/all", EventController.getAllEvents);
-router.get('/hosted', checkAuth(Role.HOST), EventController.getHostedEvents);
-router.get('/joined', checkAuth(Role.USER), EventController.getJoinedEvents);
+router.get("/hosted", checkAuth(Role.HOST), EventController.getHostedEvents);
+router.get("/joined", checkAuth(Role.USER), EventController.getJoinedEvents);
 router.patch(
   "/:id",
   checkAuth(Role.HOST),
   upload.single("image"),
   EventController.updateEvent
 );
+router.delete("/:id", checkAuth(Role.HOST), EventController.deleteEvent);
 router.get("/:id", EventController.getEventById);
-router.post('/join/:id/', checkAuth(Role.USER), EventController.joinEvent);
-router.delete('/leave/:id', checkAuth(Role.USER), EventController.leaveEvent);
+router.post("/join/:id/", checkAuth(Role.USER), EventController.joinEvent);
+router.delete("/leave/:id", checkAuth(Role.USER), EventController.leaveEvent);
 
 export const EventRoutes = router;

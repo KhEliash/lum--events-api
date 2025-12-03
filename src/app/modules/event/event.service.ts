@@ -104,27 +104,27 @@ const joinEvent = async (eventId: string, userId: string) => {
   const event = await EventModel.findById(eventId);
 
   if (!event) {
-    throw new AppError(404, 'Event not found');
+    throw new AppError(404, "Event not found");
   }
 
   if (event.status === EventStatus.FULL) {
-    throw new AppError(400, 'Event is already full');
+    throw new AppError(400, "Event is already full");
   }
 
   if (event.status === EventStatus.CANCELLED) {
-    throw new AppError(400, 'Event is cancelled');
+    throw new AppError(400, "Event is cancelled");
   }
 
   if (event.status === EventStatus.COMPLETED) {
-    throw new AppError(400, 'Event is already completed');
+    throw new AppError(400, "Event is already completed");
   }
 
   if (event.host.toString() === userId) {
-    throw new AppError(400, 'You cannot join your own event');
+    throw new AppError(400, "You cannot join your own event");
   }
 
   if (event.participants.includes(new Types.ObjectId(userId))) {
-    throw new AppError(400, 'You have already joined this event');
+    throw new AppError(400, "You have already joined this event");
   }
 
   // Check if payment required
@@ -145,30 +145,32 @@ const joinEvent = async (eventId: string, userId: string) => {
   event.currentParticipants += 1;
   await event.save();
 
-  return await event.populate('host', 'fullName profileImage rating');
+  return await event.populate("host", "fullName profileImage rating");
 };
 
 const leaveEvent = async (eventId: string, userId: string) => {
   const event = await EventModel.findById(eventId);
 
   if (!event) {
-    throw new AppError(404, 'Event not found');
+    throw new AppError(404, "Event not found");
   }
 
   if (!event.participants.includes(new Types.ObjectId(userId))) {
-    throw new AppError(400, 'You are not a participant of this event');
+    throw new AppError(400, "You are not a participant of this event");
   }
 
-  event.participants = event.participants.filter((p) => p.toString() !== userId);
+  event.participants = event.participants.filter(
+    (p) => p.toString() !== userId
+  );
   event.currentParticipants -= 1;
   await event.save();
 
-  return { message: 'Left event successfully' };
+  return { message: "Left event successfully" };
 };
 
 const getHostedEvents = async (userId: string) => {
   const events = await EventModel.find({ host: userId, isActive: true })
-    .populate('participants', 'fullName profileImage')
+    .populate("participants", "fullName profileImage")
     .sort({ date: 1 });
 
   return events;
@@ -176,10 +178,27 @@ const getHostedEvents = async (userId: string) => {
 
 const getJoinedEvents = async (userId: string) => {
   const events = await EventModel.find({ participants: userId, isActive: true })
-    .populate('host', 'fullName profileImage rating')
+    .populate("host", "fullName profileImage rating")
     .sort({ date: 1 });
 
   return events;
+};
+
+const deleteEvent = async (eventId: string, userId: string) => {
+  const event = await EventModel.findById(eventId);
+  if (!event) {
+    throw new AppError(404, "Event not found");
+  }
+
+  if (event.host.toString() !== userId) {
+    throw new AppError(403, "You are not authorized to delete this event");
+  }
+
+  event.isActive = false;
+  event.status = EventStatus.CANCELLED;
+  await event.save();
+
+  return { message: "Event deleted successfully" };
 };
 
 export const EventService = {
@@ -190,5 +209,6 @@ export const EventService = {
   joinEvent,
   leaveEvent,
   getHostedEvents,
-  getJoinedEvents
+  getJoinedEvents,
+  deleteEvent,
 };
