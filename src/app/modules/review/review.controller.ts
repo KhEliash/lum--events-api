@@ -62,9 +62,24 @@ const updateReview = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteReview = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const decoded = req.user as JwtPayload;
+
+  const result = await ReviewService.deleteReview(id, decoded.userId);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: result.message,
+    data: null
+  });
+});
+
 export const ReviewController = {
   createReview,
   getHostReviews,
   getEventReviews,
   updateReview,
+  deleteReview
 };

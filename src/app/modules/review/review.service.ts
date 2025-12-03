@@ -97,9 +97,26 @@ const updateReview = async (reviewId: string, userId: string, updateData: any) =
   return updatedReview;
 };
 
+const deleteReview = async (reviewId: string, userId: string) => {
+  const review = await Review.findById(reviewId);
+
+  if (!review) {
+    throw new AppError(404, 'Review not found');
+  }
+
+  if (review.reviewer.toString() !== userId) {
+    throw new AppError(403, 'You are not authorized to delete this review');
+  }
+
+  await Review.findByIdAndDelete(reviewId);
+
+  return { message: 'Review deleted successfully' };
+};
+
 export const ReviewService = {
   createReview,
   getHostReviews,
   getEventReviews,
   updateReview,
+  deleteReview
 };

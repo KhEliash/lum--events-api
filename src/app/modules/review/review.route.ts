@@ -5,10 +5,22 @@ import { Role } from "../user/user.interface";
 
 const router = Router();
 
-router.post("/create", checkAuth(Role.USER,Role.HOST), ReviewController.createReview);
-router.get('/host/:hostId', ReviewController.getHostReviews);
-router.get('/event/:eventId', ReviewController.getEventReviews);
-router.patch('/:id', checkAuth(Role.HOST,Role.USER), ReviewController.updateReview);
-// router.delete('/:id', auth(), ReviewController.deleteReview);
+router.post(
+  "/create",
+  checkAuth(Role.USER, Role.HOST),
+  ReviewController.createReview
+);
+router.get("/host/:hostId", ReviewController.getHostReviews);
+router.get("/event/:eventId", ReviewController.getEventReviews);
+router.patch(
+  "/:id",
+  checkAuth(Role.HOST, Role.USER),
+  ReviewController.updateReview
+);
+router.delete(
+  "/:id",
+  checkAuth(Role.HOST, Role.USER),
+  ReviewController.deleteReview
+);
 
 export const ReviewRoutes = router;
