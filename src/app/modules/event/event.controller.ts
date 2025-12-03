@@ -130,6 +130,18 @@ const getHostedEvents = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getJoinedEvents = catchAsync(async (req: Request, res: Response) => {
+  const decoded = req.user as JwtPayload;
+  const result = await EventService.getJoinedEvents(decoded.userId);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Joined events retrieved successfully',
+    data: result,
+  });
+});
+
 export const EventController = {
   createEvent,
   getAllEvents,
@@ -138,4 +150,5 @@ export const EventController = {
   joinEvent,
   leaveEvent,
   getHostedEvents,
+  getJoinedEvents
 };

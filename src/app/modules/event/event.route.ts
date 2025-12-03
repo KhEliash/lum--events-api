@@ -16,6 +16,7 @@ router.post(
 );
 router.get("/all", EventController.getAllEvents);
 router.get('/hosted', checkAuth(Role.HOST), EventController.getHostedEvents);
+router.get('/joined', checkAuth(Role.USER), EventController.getJoinedEvents);
 router.patch(
   "/:id",
   checkAuth(Role.HOST),

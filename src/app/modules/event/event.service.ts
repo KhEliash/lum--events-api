@@ -174,6 +174,14 @@ const getHostedEvents = async (userId: string) => {
   return events;
 };
 
+const getJoinedEvents = async (userId: string) => {
+  const events = await EventModel.find({ participants: userId, isActive: true })
+    .populate('host', 'fullName profileImage rating')
+    .sort({ date: 1 });
+
+  return events;
+};
+
 export const EventService = {
   createEvent,
   getAllEvents,
@@ -182,4 +190,5 @@ export const EventService = {
   joinEvent,
   leaveEvent,
   getHostedEvents,
+  getJoinedEvents
 };
