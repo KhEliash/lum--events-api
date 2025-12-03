@@ -50,6 +50,15 @@ const credentialLogin = async (res: Response, payload: Partial<IUser>) => {
   };
 };
 
+const logoutUser = async (res: Response): Promise<void> => {
+  res.clearCookie("accessToken", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
+};
+
 export const AuthServices = {
   credentialLogin,
+  logoutUser,
 };
