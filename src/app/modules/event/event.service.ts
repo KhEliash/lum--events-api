@@ -1,7 +1,6 @@
- 
 // import httpStatus from "http-status-codes";
 
- 
+import AppError from "../../errorHelpers/AppError";
 import { IEventCreate } from "./event.interface";
 import { EventModel } from "./event.model";
 
@@ -65,7 +64,44 @@ const getAllEvents = async (query: any) => {
   };
 };
 
+const getEventById = async (eventId: string) => {
+  const event = await EventModel.findById(eventId)
+    .populate("host", "fullName profileImage rating totalRatings bio")
+    .populate("participants", "fullName profileImage");
+
+  if (!event) {
+    throw new AppError(404, "Event not found");
+  }
+
+  return event;
+};
+
+const updateEvent = async (
+  eventId: string,
+  userId: string,
+  updateData: any
+) => {
+  const event = await EventModel.findById(eventId);
+
+  if (!event) {
+    throw new AppError(404, "Event not found");
+  }
+
+  if (event.host.toString() !== userId) {
+    throw new AppError(403, "You are not authorized to update this event");
+  }
+
+  const updatedEvent = await EventModel.findByIdAndUpdate(eventId, updateData, {
+    new: true,
+    runValidators: true,
+  }).populate("host", "fullName profileImage rating");
+
+  return updatedEvent;
+};
+
 export const EventService = {
   createEvent,
   getAllEvents,
+  getEventById,
+  updateEvent,
 };

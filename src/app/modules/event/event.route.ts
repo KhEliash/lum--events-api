@@ -15,5 +15,12 @@ router.post(
   EventController.createEvent
 );
 router.get("/all", EventController.getAllEvents);
+router.get("/:id", EventController.getEventById);
+router.patch(
+  "/:id",
+  checkAuth(Role.HOST),
+  upload.single("image"),
+  EventController.updateEvent
+);
 
 export const EventRoutes = router;

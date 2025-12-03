@@ -58,7 +58,41 @@ const getAllEvents = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getEventById = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await EventService.getEventById(id);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Event retrieved successfully",
+    data: result,
+  });
+});
+
+const updateEvent = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const userId = req.user?.userId as string;
+
+  // Handle image upload if present
+  //   if (req.file) {
+  //     const result = await uploadToCloudinary(req.file.buffer, 'events-platform/events');
+  //     req.body.eventImage = result.secure_url;
+  //   }
+
+  const result = await EventService.updateEvent(id, userId, req.body);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Event updated successfully",
+    data: result,
+  });
+});
+
 export const EventController = {
   createEvent,
   getAllEvents,
+  getEventById,
+  updateEvent,
 };
