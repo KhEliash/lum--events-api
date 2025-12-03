@@ -5,6 +5,7 @@ import { NextFunction, Request, Response } from "express";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status-codes";
 import { AuthServices } from "./auth.service";
+import { JwtPayload } from "jsonwebtoken";
 const credentialLogin = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const loginInfo = await AuthServices.credentialLogin(res, req.body);
@@ -28,7 +29,24 @@ const credentialLogout = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const changePassword = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const decoded = req.user as JwtPayload;
+  const { oldPassword, newPassword } = req.body;
+
+  const result = await AuthServices.changePassword(decoded.userId, oldPassword, newPassword);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: result.message,
+    data: null
+  });
+});
+
+ 
+
 export const AuthControllers = {
   credentialLogin,
   credentialLogout,
+  changePassword
 };

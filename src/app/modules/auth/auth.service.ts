@@ -58,8 +58,43 @@ const logoutUser = async (res: Response): Promise<void> => {
   });
 };
 
+const changePassword = async (
+  userId: string,
+  oldPassword: string,
+  newPassword: string
+) => {
+ 
+  const user = await User.findById(userId).select("+password");
+
+  if (!user) {
+    throw new AppError(404, "User not found");
+  }
+
+  
+  const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+  if (!isPasswordValid) {
+    throw new AppError(401, "Old password is incorrect");
+  }
+
+ 
+  const isSamePassword = await bcrypt.compare(newPassword, user.password);
+  if (isSamePassword) {
+    throw new AppError(400, "New password must be different");
+  }
+
+   
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+  
+  user.password = hashedPassword;
+  await user.save();
+
+  return { message: "Password changed successfully" };
+};
 
 export const AuthServices = {
   credentialLogin,
   logoutUser,
+  changePassword,
 };
