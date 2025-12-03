@@ -22,5 +22,7 @@ router.patch(
   upload.single("image"),
   EventController.updateEvent
 );
+router.post('/join/:id/', checkAuth(Role.USER), EventController.joinEvent);
+router.delete('/leave/:id', checkAuth(Role.USER), EventController.leaveEvent);
 
 export const EventRoutes = router;

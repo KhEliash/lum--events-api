@@ -1,7 +1,8 @@
 // import httpStatus from "http-status-codes";
 
+import { Types } from "mongoose";
 import AppError from "../../errorHelpers/AppError";
-import { IEventCreate } from "./event.interface";
+import { EventStatus, IEventCreate } from "./event.interface";
 import { EventModel } from "./event.model";
 
 const createEvent = async (eventData: IEventCreate) => {
@@ -99,9 +100,77 @@ const updateEvent = async (
   return updatedEvent;
 };
 
+const joinEvent = async (eventId: string, userId: string) => {
+  const event = await EventModel.findById(eventId);
+
+  if (!event) {
+    throw new AppError(404, 'Event not found');
+  }
+
+  if (event.status === EventStatus.FULL) {
+    throw new AppError(400, 'Event is already full');
+  }
+
+  if (event.status === EventStatus.CANCELLED) {
+    throw new AppError(400, 'Event is cancelled');
+  }
+
+  if (event.status === EventStatus.COMPLETED) {
+    throw new AppError(400, 'Event is already completed');
+  }
+
+  if (event.host.toString() === userId) {
+    throw new AppError(400, 'You cannot join your own event');
+  }
+
+  if (event.participants.includes(new Types.ObjectId(userId))) {
+    throw new AppError(400, 'You have already joined this event');
+  }
+
+  // Check if payment required
+  // if (event.joiningFee > 0) {
+  //   // Check if payment is completed
+  //   const payment = await Payment.findOne({
+  //     event: eventId,
+  //     user: userId,
+  //     status: PaymentStatus.COMPLETED,
+  //   });
+
+  //   if (!payment) {
+  //     throw new AppError(400, 'Payment required to join this event');
+  //   }
+  // }
+
+  event.participants.push(new Types.ObjectId(userId));
+  event.currentParticipants += 1;
+  await event.save();
+
+  return await event.populate('host', 'fullName profileImage rating');
+};
+
+const leaveEvent = async (eventId: string, userId: string) => {
+  const event = await EventModel.findById(eventId);
+
+  if (!event) {
+    throw new AppError(404, 'Event not found');
+  }
+
+  if (!event.participants.includes(new Types.ObjectId(userId))) {
+    throw new AppError(400, 'You are not a participant of this event');
+  }
+
+  event.participants = event.participants.filter((p) => p.toString() !== userId);
+  event.currentParticipants -= 1;
+  await event.save();
+
+  return { message: 'Left event successfully' };
+};
+
 export const EventService = {
   createEvent,
   getAllEvents,
   getEventById,
   updateEvent,
+  joinEvent,
+  leaveEvent
 };

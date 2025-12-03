@@ -90,9 +90,39 @@ const updateEvent = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const joinEvent = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const userId = req.user?.userId as string;
+
+  const result = await EventService.joinEvent(id, userId);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Joined event successfully",
+    data: result,
+  });
+});
+
+const leaveEvent = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const userId = req.user?.userId as string;
+
+  const result = await EventService.leaveEvent(id, userId);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Left event successfully",
+    data: result?.message,
+  });
+});
+
 export const EventController = {
   createEvent,
   getAllEvents,
   getEventById,
   updateEvent,
+  joinEvent,
+  leaveEvent,
 };
