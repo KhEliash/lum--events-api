@@ -1,5 +1,5 @@
 import AppError from "../../errorHelpers/AppError";
-import { IUser, Role } from "./user.interface";
+import { IUser } from "./user.interface";
 import { User } from "./user.model";
 import httpStatus from "http-status-codes";
 import bcryptjs from "bcryptjs";
