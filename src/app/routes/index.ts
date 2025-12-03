@@ -20,7 +20,7 @@ const moduleRoutes = [
     route: EventRoutes,
   },
   {
-    path: "/review",
+    path: "/reviews",
     route: ReviewRoutes,
   },
 ];
