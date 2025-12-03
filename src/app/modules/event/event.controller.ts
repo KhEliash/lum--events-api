@@ -10,14 +10,16 @@ import { uploadToCloudinary } from "../../utils/uploadToCloudinary";
 
 const createEvent = catchAsync(async (req: Request, res: Response) => {
   const decoded = req.user as JwtPayload;
-    const hostId = decoded.userId;
+  const hostId = decoded.userId;
 
-  
-    let eventImage;
-    if (req.file) {
-      const result = await uploadToCloudinary(req.file.buffer, 'events-platform/events');
-      eventImage = result.secure_url;
-    }
+  let eventImage;
+  if (req.file) {
+    const result = await uploadToCloudinary(
+      req.file.buffer,
+      "events-platform/events"
+    );
+    eventImage = result.secure_url;
+  }
 
   const eventData = {
     name: req.body.name,
@@ -73,15 +75,17 @@ const getEventById = catchAsync(async (req: Request, res: Response) => {
 
 const updateEvent = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const userId = req.user?.userId as string;
+  const decoded = req.user as JwtPayload;
 
-  // Handle image upload if present
-  //   if (req.file) {
-  //     const result = await uploadToCloudinary(req.file.buffer, 'events-platform/events');
-  //     req.body.eventImage = result.secure_url;
-  //   }
+  if (req.file) {
+    const result = await uploadToCloudinary(
+      req.file.buffer,
+      "events-platform/events"
+    );
+    req.body.eventImage = result.secure_url;
+  }
 
-  const result = await EventService.updateEvent(id, userId, req.body);
+  const result = await EventService.updateEvent(id, decoded.userId, req.body);
 
   sendResponse(res, {
     statusCode: 200,
