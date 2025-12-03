@@ -1,5 +1,5 @@
 import AppError from "../../errorHelpers/AppError";
-import { IUser } from "./user.interface";
+import { IUser, Role } from "./user.interface";
 import { User } from "./user.model";
 import httpStatus from "http-status-codes";
 import bcryptjs from "bcryptjs";
@@ -30,20 +30,12 @@ const createUser = async (payload: IUser) => {
 };
 
 const updateProfile = async (userId: string, payload: any) => {
-  
- 
-
   const user = await User.findById(userId);
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, "User not found");
   }
 
-  const {
-    fullName,
-    bio,
-    interests,
-    location: { city, area } = {},
-  } = payload;
+  const { fullName, bio, interests, location: { city, area } = {} } = payload;
 
   if (fullName !== undefined) user.fullName = fullName;
   if (bio !== undefined) user.bio = bio;
@@ -67,49 +59,73 @@ const getMe = async (userId: string) => {
   };
 };
 
-const getAllUsers = async () => {
-  const users = await User.find().select("password");
+const getAllUsers = async (page: number, limit: number) => {
+  const skip = (page - 1) * limit;
+
+  const users = await User.find()
+    .skip(skip)
+    .limit(limit)
+    .sort({ createdAt: -1 });
+
   const totalUsers = await User.countDocuments();
 
   return {
     data: users,
-    meta: { total: totalUsers },
+    meta: {
+      page,
+      limit,
+      total: totalUsers,
+      totalPages: Math.ceil(totalUsers / limit),
+    },
   };
 };
 
-// const blockUser = async (params: any) => {
-//   const { userId } = params;
-//   const user = await User.findByIdAndUpdate(
-//     userId,
-//     { isBlocked: true },
-//     { new: true }
-//   );
+// Get user profile by ID
+// const getUserById = async (userId: string) => {
+//   const user = await User.findById(userId);
 
 //   if (!user) {
-//     throw new Error("User not found");
+//     throw new AppError(404, 'User not found');
 //   }
-//   return user;
+
+//   // Get hosted events if user is a host
+//   let hostedEvents = [];
+//   if (user.role === Role.HOST) {
+//     hostedEvents = await Event.find({ host: userId, isActive: true })
+//       .select('name type date location joiningFee currentParticipants maxParticipants status')
+//       .limit(5);
+//   }
+
+//   // Get joined events
+//   const joinedEvents = await Event.find({
+//     participants: userId,
+//     isActive: true,
+//   })
+//     .select('name type date location joiningFee status')
+//     .limit(5);
+
+//   // Get reviews if host
+//   let reviews = [];
+//   if (user.role === Role.HOST) {
+//     reviews = await Review.find({ host: userId })
+//       .populate('reviewer', 'fullName profileImage')
+//       .limit(5)
+//       .sort({ createdAt: -1 });
+//   }
+
+//   return {
+//     user,
+//     hostedEvents,
+//     joinedEvents,
+//     reviews,
+//   };
 // };
 
-// const unBlockUser = async (params: any) => {
-//   const { userId } = params;
-//   const user = await User.findByIdAndUpdate(
-//     userId,
-//     { isBlocked: false },
-//     { new: true }
-//   );
-
-//   if (!user) {
-//     throw new Error("User not found");
-//   }
-//   return user;
-// };
-
+ 
 export const UserService = {
   createUser,
   getMe,
   getAllUsers,
-  // blockUser,
-  // unBlockUser,
+  // getUserById, 
   updateProfile,
 };

@@ -47,9 +47,23 @@ const getMe = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// const getUserProfile = catchAsync(async (req: Request, res: Response) => {
+//   const { id } = req.params;
+//   const result = await UserService.getUserById(id);
+
+//   sendResponse(res, {
+//     statusCode: 200,
+//     success: true,
+//     message: 'User profile retrieved successfully',
+//     data: result,
+//   });
+// });
+
 const getAllUsers = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await UserService.getAllUsers();
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const result = await UserService.getAllUsers(page, limit);
 
     sendResponse(res, {
       statusCode: httpStatus.CREATED,
@@ -61,36 +75,12 @@ const getAllUsers = catchAsync(
   }
 );
 
-// const blockUser = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const result = await UserService.blockUser(req.params);
-
-//     sendResponse(res, {
-//       statusCode: httpStatus.CREATED,
-//       success: true,
-//       message: "Blocked Successfully",
-//       data: result,
-//     });
-//   }
-// );
-// const unBlockUser = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const result = await UserService.unBlockUser(req.params);
-
-//     sendResponse(res, {
-//       statusCode: httpStatus.CREATED,
-//       success: true,
-//       message: "UnBlocked Successfully",
-//       data: result,
-//     });
-//   }
-// );
+ 
 
 export const UserController = {
   createUser,
   getMe,
   getAllUsers,
-  // blockUser,
-  // unBlockUser,
+  // getUserProfile, 
   updateProfile,
 };

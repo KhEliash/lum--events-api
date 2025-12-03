@@ -10,6 +10,7 @@ router.get(
   checkAuth(Role.HOST, Role.ADMIN, Role.USER),
   UserController.getMe
 );
+// router.get('/:id', UserController.getUserProfile);
 router.get("/all", checkAuth(Role.ADMIN), UserController.getAllUsers);
 router.patch("/update", checkAuth(Role.ADMIN,Role.HOST,Role.USER), UserController.updateProfile);
 router.post("/register", UserController.createUser);
