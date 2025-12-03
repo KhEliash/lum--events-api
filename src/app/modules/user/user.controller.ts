@@ -19,31 +19,23 @@ const createUser = catchAsync(
   }
 );
 
-// const updateProfile = catchAsync(async (req, res) => {
-//   const userId = req.user.userId;
-//   const updatedUser = await UserService.updateProfile(userId, req.body);
+const updateProfile = catchAsync(async (req: Request, res: Response) => {
+  const decodedToken = req.user as JwtPayload;
 
-//   sendResponse(res, {
-//     statusCode: httpStatus.OK,
-//     success: true,
-//     message: "Profile updated successfully",
-//     data: updatedUser,
-//   });
-// });
+  const updatedUser = await UserService.updateProfile(
+    decodedToken.userId,
+    req.body
+  );
 
-// const getMe = async (req: Request, res: Response) => {
-//   const decodedToken = req.user as JwtPayload;
-//   const result = await UserService.getMe(decodedToken.userId);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Profile updated successfully",
+    data: updatedUser,
+  });
+});
 
-//   sendResponse(res, {
-//     success: true,
-//     statusCode: httpStatus.CREATED,
-//     message: "Profile Retrieved Successfully",
-//     data: result.data,
-//   });
-// };
-
-const getMe = async (req: Request, res: Response) => {
+const getMe = catchAsync(async (req: Request, res: Response) => {
   const decodedToken = req.user as JwtPayload;
   const result = await UserService.getMe(decodedToken.userId);
 
@@ -53,7 +45,7 @@ const getMe = async (req: Request, res: Response) => {
     message: "Profile Retrieved Successfully",
     data: result.data,
   });
-};
+});
 
 const getAllUsers = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -100,5 +92,5 @@ export const UserController = {
   getAllUsers,
   // blockUser,
   // unBlockUser,
-  // updateProfile
+  updateProfile,
 };

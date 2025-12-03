@@ -29,31 +29,39 @@ const createUser = async (payload: IUser) => {
   return user;
 };
 
-// const updateProfile = async (userId: string, payload: any) => {
-//   const user = await User.findById(userId);
-//   if (!user) {
-//     throw new AppError(httpStatus.NOT_FOUND, "User not found");
-//   }
+const updateProfile = async (userId: string, payload: any) => {
+  
+ 
 
-//   // const { fullName, phone } = payload;
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
 
-//   // if (fullName) user.fullName = name;
-//   // if (phone) user.phone = phone;
+  const {
+    fullName,
+    bio,
+    interests,
+    location: { city, area } = {},
+  } = payload;
 
-//   await user.save();
+  if (fullName !== undefined) user.fullName = fullName;
+  if (bio !== undefined) user.bio = bio;
+  if (interests !== undefined) user.interests = interests;
 
-//   return user;
-// };
+  if (city !== undefined || area !== undefined) {
+    user.location = {
+      city: city ?? user.location?.city ?? "",
+      area: area ?? user.location?.area ?? "",
+    };
+  }
+  await user.save();
 
-// const getMe = async (userId: string) => {
-//   const user = await User.findById(userId).select("-password");
-//   return {
-//     data: user,
-//   };
-// };
+  return user;
+};
 
 const getMe = async (userId: string) => {
-  const user = await User.findById(userId).select("-password");
+  const user = await User.findById(userId);
   return {
     data: user,
   };
@@ -82,6 +90,7 @@ const getAllUsers = async () => {
 //   }
 //   return user;
 // };
+
 // const unBlockUser = async (params: any) => {
 //   const { userId } = params;
 //   const user = await User.findByIdAndUpdate(
@@ -102,5 +111,5 @@ export const UserService = {
   getAllUsers,
   // blockUser,
   // unBlockUser,
-  // updateProfile,
+  updateProfile,
 };
