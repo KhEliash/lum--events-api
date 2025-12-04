@@ -128,18 +128,18 @@ const joinEvent = async (eventId: string, userId: string) => {
   }
 
   // Check if payment required
-  // if (event.joiningFee > 0) {
-  //   // Check if payment is completed
-  //   const payment = await Payment.findOne({
-  //     event: eventId,
-  //     user: userId,
-  //     status: PaymentStatus.COMPLETED,
-  //   });
+  if (event.joiningFee > 0) {
+    // Check if payment is completed
+    const payment = await Payment.findOne({
+      event: eventId,
+      user: userId,
+      status: PaymentStatus.COMPLETED,
+    });
 
-  //   if (!payment) {
-  //     throw new AppError(400, 'Payment required to join this event');
-  //   }
-  // }
+    if (!payment) {
+      throw new AppError(400, 'Payment required to join this event');
+    }
+  }
 
   event.participants.push(new Types.ObjectId(userId));
   event.currentParticipants += 1;
