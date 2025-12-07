@@ -5,14 +5,14 @@ import { envVars } from "../../config/env";
 import { sendResponse } from "../../utils/sendResponse";
 
 const initPayment = catchAsync(async (req: Request, res: Response) => {
-    const bookingId = req.params.bookingId;
-    const result = await PaymentService.initPayment(bookingId as string)
-    sendResponse(res, {
-        statusCode: 201,
-        success: true,
-        message: "Payment done successfully",
-        data: result,
-    });
+  const bookingId = req.params.bookingId;
+  const result = await PaymentService.initPayment(bookingId as string);
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: "Payment done successfully",
+    data: result,
+  });
 });
 
 const successPayment = catchAsync(async (req: Request, res: Response) => {
