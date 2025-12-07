@@ -1,25 +1,37 @@
-// import { Request, Response } from "express";
-// import { catchAsync } from "../../utils/catchAsync";
-// import { sendResponse } from "../../utils/sendResponse";
-// import { PaymentService } from "./payment.service";
+import { Request, Response } from "express";
+import { catchAsync } from "../../utils/catchAsync";
+ import { PaymentService } from "./payment.service";
+import { envVars } from "../../config/env";
 
 
+const successPayment = catchAsync(async (req: Request, res: Response) => {
+    const query = req.query
+    const result = await PaymentService.successPayment(query as Record<string, string>)
+     if (result.success) {
+        res.redirect(`${envVars.SSL_SUCCESS_FRONTEND_URL}?transactionId=${query.transactionId}&message=${result.message}&amount=${query.amount}&status=${query.status}`)
+    }
+});
 
-// const initializePayment = catchAsync(async (req: Request, res: Response) => {
-//   const userId = req.user?.userId as string;
-//   const { eventId } = req.body;
+// const failPayment = catchAsync(async (req: Request, res: Response) => {
+//     const query = req.query
+//     const result = await PaymentService.failPayment(query as Record<string, string>)
 
-//   const result = await PaymentService.initializePayment(userId, eventId);
-
-//   sendResponse(res, {
-//     statusCode: 200,
-//     success: true,
-//     message: 'Payment initialized successfully',
-//     data: result,
-//   });
+//     if (!result.success) {
+//         res.redirect(`${envVars.SSL.SSL_FAIL_FRONTEND_URL}?transactionId=${query.transactionId}&message=${result.message}&amount=${query.amount}&status=${query.status}`)
+//     }
 // });
 
+// const cancelPayment = catchAsync(async (req: Request, res: Response) => {
+//     const query = req.query
+//     const result = await PaymentService.cancelPayment(query as Record<string, string>)
 
+//     if (!result.success) {
+//         res.redirect(`${envVars.SSL.SSL_CANCEL_FRONTEND_URL}?transactionId=${query.transactionId}&message=${result.message}&amount=${query.amount}&status=${query.status}`)
+//     }
+// });
 export const PaymentController = {
   // initializePayment
+  successPayment,
+    // failPayment,
+    // cancelPayment,
 };

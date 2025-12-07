@@ -1,12 +1,10 @@
 import { Router } from "express";
-// import { PaymentController } from "./paymetnt.controller";
-// import { checkAuth } from "../../middlewares/checkAuth";
-// import { Role } from "../user/user.interface";
- 
-
+import { PaymentController } from "./paymetnt.controller";
+  
 const router = Router();
 
-//  router.post('/initialize', checkAuth(Role.USER,Role.HOST), PaymentController.initializePayment);
+router.post("/success", PaymentController.successPayment);
+// router.post("/fail");
+// router.post("/cancel");
 
- 
 export const PaymentRoutes = router;
