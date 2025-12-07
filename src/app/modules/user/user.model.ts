@@ -52,6 +52,9 @@ const userSchema = new Schema<IUser>(
       type: Number,
       default: 0,
     },
+    phone:{
+      type: String,
+    },
     isActive: {
       type: Boolean,
       default: true,

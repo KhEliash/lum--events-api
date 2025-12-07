@@ -4,6 +4,8 @@ import { Types } from "mongoose";
 import AppError from "../../errorHelpers/AppError";
 import { EventStatus, IEventCreate } from "./event.interface";
 import { EventModel } from "./event.model";
+import { Payment } from "../payment/payment.model";
+import { PaymentStatus } from "../payment/payment.interface";
 
 const createEvent = async (eventData: IEventCreate) => {
   const event = await EventModel.create(eventData);

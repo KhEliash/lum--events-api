@@ -14,6 +14,7 @@ export interface IUser extends Document {
   role: Role;
   profileImage?: string;
   bio?: string;
+  phone?: string;
   interests: string[];
   location?: {
     city: string;

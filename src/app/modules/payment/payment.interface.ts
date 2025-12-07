@@ -1,30 +1,23 @@
-import { Document, Types } from 'mongoose';
+import { Types } from 'mongoose';
 
 export enum PaymentStatus {
-  PENDING = 'pending',
-  COMPLETED = 'completed',
-  FAILED = 'failed',
-  REFUNDED = 'refunded'
+  PAID = 'PAID',
+  UNPAID = 'UNPAID',
+  CANCELLED= 'CANCELLED',
+  FAILED = 'FAILED',
+  REFUNDED = 'REFUNDED'
 }
 
-export interface IPayment extends Document {
-  _id: Types.ObjectId;
-  user: Types.ObjectId;
-  event: Types.ObjectId;
-  host: Types.ObjectId;
-  amount: number;
+export interface IPayment  {
+  booking: Types.ObjectId;
   transactionId: string;
-  paymentMethod: string;
+  amount: number;
+  paymentMethod?: any;
   status: PaymentStatus;
+  invoiceUrl?: string;
   paidAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface IPaymentCreate {
-  user: Types.ObjectId;
-  event: Types.ObjectId;
-  host: Types.ObjectId;
-  amount: number;
-  paymentMethod?: string;
-}
+ 
