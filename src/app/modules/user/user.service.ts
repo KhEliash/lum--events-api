@@ -37,9 +37,16 @@ const updateProfile = async (userId: string, payload: any) => {
     throw new AppError(httpStatus.NOT_FOUND, "User not found");
   }
 
-  const { fullName, bio, interests, location: { city, area } = {} } = payload;
+  const {
+    fullName,
+    phone,
+    bio,
+    interests,
+    location: { city, area } = {},
+  } = payload;
 
   if (fullName !== undefined) user.fullName = fullName;
+  if (phone !== undefined) user.phone = phone;
   if (bio !== undefined) user.bio = bio;
   if (interests !== undefined) user.interests = interests;
 
@@ -108,9 +115,9 @@ const getUserById = async (userId: string) => {
     .limit(5);
 
   // Get reviews if host
-  let reviews :any = [];
-  if (user.role === Role.HOST) {
-    reviews = await Review.find({ host: userId })
+  let reviews: any = [];
+  if (user.role === Role.USER) {
+    reviews = await Review.find({ reviewer: userId })
       .populate("reviewer", "fullName profileImage")
       .limit(5)
       .sort({ createdAt: -1 });
@@ -124,29 +131,29 @@ const getUserById = async (userId: string) => {
   };
 };
 
- const deactivateUser = async (userId: string) => {
+const deactivateUser = async (userId: string) => {
   const user = await User.findById(userId);
 
   if (!user) {
-    throw new AppError(404, 'User not found');
+    throw new AppError(404, "User not found");
   }
 
   user.isActive = false;
   await user.save();
 
-  return { message: 'User deactivated successfully' };
+  return { message: "User deactivated successfully" };
 };
- const activateUser = async (userId: string) => {
+const activateUser = async (userId: string) => {
   const user = await User.findById(userId);
 
   if (!user) {
-    throw new AppError(404, 'User not found');
+    throw new AppError(404, "User not found");
   }
 
   user.isActive = true;
   await user.save();
 
-  return { message: 'User activated successfully' };
+  return { message: "User activated successfully" };
 };
 
 export const UserService = {

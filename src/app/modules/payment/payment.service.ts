@@ -40,6 +40,19 @@ const initPayment = async (bookingId: string) => {
   };
 };
 
+const myPayment = async (userId: string) => {
+  const payments = await Payment.find()
+    .populate({
+      path: "booking",
+      match: { user: userId },
+      populate: { path: "event", select: "name joiningFee date" },
+    })
+    .lean();
+
+  return payments.filter((p) => p.booking !== null);
+};
+
+
 const successPayment = async (query: Record<string, string>) => {
   const session = await Booking.startSession();
   session.startTransaction();
@@ -137,6 +150,7 @@ const cancelPayment = async (query: Record<string, string>) => {
 };
 export const PaymentService = {
   initPayment,
+  myPayment,
   successPayment,
   cancelPayment,
   failPayment,

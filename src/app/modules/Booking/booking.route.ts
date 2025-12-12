@@ -18,9 +18,9 @@ router.get("/", checkAuth(Role.ADMIN), BookingController.getAllBookings);
 
 // api/v1/booking/my-bookings
 router.get(
-  "/my-bookings",
+  "/my-bookings/:eventId",
   checkAuth(...Object.values(Role)),
-  BookingController.getUserBookings
+  BookingController.getSingleBooking
 );
 
 // api/v1/booking/bookingId

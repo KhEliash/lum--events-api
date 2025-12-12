@@ -6,6 +6,8 @@ import { EventStatus, IEventCreate } from "./event.interface";
 import { EventModel } from "./event.model";
 import { Payment } from "../payment/payment.model";
 import { PaymentStatus } from "../payment/payment.interface";
+import { BOOKING_STATUS } from "../Booking/booking.interface";
+import { Booking } from "../Booking/booking.model";
 
 const createEvent = async (eventData: IEventCreate) => {
   const event = await EventModel.create(eventData);
@@ -130,19 +132,21 @@ const joinEvent = async (eventId: string, userId: string) => {
   }
 
   // Check if payment required
-  if (event.joiningFee > 0) {
-    // Check if payment is completed
+  const existingBooking = await Booking.findOne({
+    user: userId,
+    event: eventId,
+    status: BOOKING_STATUS.PENDING || BOOKING_STATUS.COMPLETE, // or PENDING if you want
+  });
+  if (existingBooking) {
     const payment = await Payment.findOne({
-      event: eventId,
-      user: userId,
-      status: PaymentStatus.COMPLETED,
+      booking: existingBooking._id,
+      status: PaymentStatus.PAID,
     });
 
     if (!payment) {
-      throw new AppError(400, 'Payment required to join this event');
+      throw new AppError(400, "Payment required to join this event");
     }
   }
-
   event.participants.push(new Types.ObjectId(userId));
   event.currentParticipants += 1;
   await event.save();
@@ -152,9 +156,12 @@ const joinEvent = async (eventId: string, userId: string) => {
 
 const leaveEvent = async (eventId: string, userId: string) => {
   const event = await EventModel.findById(eventId);
-
+ 
   if (!event) {
     throw new AppError(404, "Event not found");
+  }
+  if (event?.status === "completed") {
+    throw new AppError(404, "Event completed you can't leave now");
   }
 
   if (!event.participants.includes(new Types.ObjectId(userId))) {

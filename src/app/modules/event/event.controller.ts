@@ -10,7 +10,7 @@ import { uploadToCloudinary } from "../../utils/uploadToCloudinary";
 
 const createEvent = catchAsync(async (req: Request, res: Response) => {
   const decoded = req.user as JwtPayload;
-  const hostId = decoded.userId;
+  // const hostId = decoded.userId;
 
   let eventImage;
   if (req.file) {
@@ -114,7 +114,7 @@ const leaveEvent = catchAsync(async (req: Request, res: Response) => {
   const userId = req.user?.userId as string;
 
   const result = await EventService.leaveEvent(id, userId);
-
+// console.log(result);
   sendResponse(res, {
     statusCode: 200,
     success: true,

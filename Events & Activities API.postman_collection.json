@@ -1,0 +1,1043 @@
+{
+	"info": {
+		"_postman_id": "41172303-d80c-41ec-bb1d-bcbe122a5e79",
+		"name": "Events & Activities API",
+		"description": "Complete API collection for Events & Activities Platform",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46589224",
+		"_collection_link": "https://elias-3354528.postman.co/workspace/Elias's-Workspace~531fb3b6-7012-44f2-83b3-65dde3ddd942/collection/46589224-41172303-d80c-41ec-bb1d-bcbe122a5e79?action=share&source=collection_link&creator=46589224"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fullName\": \"User\",\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n//   \"bio\": \"Love outdoor activities\",\n//   \"role\": \"host\",\n//   \"interests\": [\"hiking\", \"concerts\", \"sports\"],\n//   \"location\": {\n//     \"city\": \"Dhaka\",\n//     \"area\": \"Gulshan\"\n//   }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/users/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "// {\n//   \"email\": \"host@example.com\",\n//   \"password\": \"password123\"\n// }\n// {\n//   \"email\": \"admin@example.com\",\n//   \"password\": \"Password123\"\n// }\n{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTMwMDMwNWU5OTNjMDg2YzRlNzc0OTkiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY0Nzg3MzA4LCJleHAiOjE3NjUzOTIxMDh9.K3RqfpRFmWM-32flIHWGiq9SPC1tpiq3jELKrYcwrNs"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"oldPassword\": \"newPassword123\",\n  \"newPassword\": \"Password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/change-password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get My Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTJmZDMxNjg3YzBkZmQ1MDNmMDQzYmYiLCJlbWFpbCI6ImpvaG5AZXhhbXBsZS5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2NTQ1OTQwMSwiZXhwIjoxNzY2MDY0MjAxfQ.qZg4OSCFA8I6am7l4_1S7XqRkU3kZ0_vm5xHeQirOVM"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Profile by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "692fd31687c0dfd503f043bf"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTJmZDMxNjg3YzBkZmQ1MDNmMDQzYmYiLCJlbWFpbCI6ImpvaG5AZXhhbXBsZS5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2NDc1MTM4OCwiZXhwIjoxNzY1MzU2MTg4fQ.4LclCxmceHjWTBg84TKI7xaHVe_kqJsq4C-QPqeZiPw"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fullName\": \"John Updated 2nd\",\n  \"bio\": \"New bio\",\n  \"interests\": [\"hiking\", \"tech\"],\n  \"location\": {\n    \"city\": \"Dhaka\",\n    \"area\": \"Banani\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/update",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Profile Image (not done yet)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/users/upload-image",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"upload-image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upgrade to Host (ndy)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/upgrade-to-host",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"upgrade-to-host"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deactivate user (admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTMwMDMwNWU5OTNjMDg2YzRlNzc0OTkiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY0Nzg3MzA4LCJleHAiOjE3NjUzOTIxMDh9.K3RqfpRFmWM-32flIHWGiq9SPC1tpiq3jELKrYcwrNs"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "692fd31687c0dfd503f043bf"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activate user (admin)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTMwMDMwNWU5OTNjMDg2YzRlNzc0OTkiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY0Nzg3MzA4LCJleHAiOjE3NjUzOTIxMDh9.K3RqfpRFmWM-32flIHWGiq9SPC1tpiq3jELKrYcwrNs"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "692fd31687c0dfd503f043bf"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTMwMDMwNWU5OTNjMDg2YzRlNzc0OTkiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY0NzU0MjA2LCJleHAiOjE3NjUzNTkwMDZ9.oPT6M1mFfdFnyd5EggEsvC2Pt0PlbQdK7PzGVZ0Hy9E"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/all?page=1&limit=10&role=user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "role",
+									"value": "user"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "Create Event (Host) ☑️",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTMwMDU4MGU1NzgzYjM2MzkxNzQxZmUiLCJlbWFpbCI6Imhvc3RAZXhhbXBsZS5jb20iLCJyb2xlIjoiaG9zdCIsImlhdCI6MTc2NDc2Njc5NCwiZXhwIjoxNzY1MzcxNTk0fQ.cZrL1DCMhbiYEOQjtI8_VFPtW1BzIB9DgXTcjTdxujw"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Weekend Hiking Trip",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "hike",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Join us for an exciting hiking adventure!",
+									"type": "text"
+								},
+								{
+									"key": "date",
+									"value": "2024-12-15",
+									"type": "text"
+								},
+								{
+									"key": "time",
+									"value": "08:00 AM",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "Lawachara National Park",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "Sylhet",
+									"type": "text"
+								},
+								{
+									"key": "minParticipants",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "maxParticipants",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "joiningFee",
+									"value": "500",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/us/Downloads/banner.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/events/create",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Events(admin)☑️",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/events/all?page=1&limit=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "type",
+									"value": "hike",
+									"disabled": true
+								},
+								{
+									"key": "city",
+									"value": "Dhaka",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Event by ID☑️",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/events/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "693038ac27228c2e268cb650"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Event (Host)☑️",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTMwMDU4MGU1NzgzYjM2MzkxNzQxZmUiLCJlbWFpbCI6Imhvc3RAZXhhbXBsZS5jb20iLCJyb2xlIjoiaG9zdCIsImlhdCI6MTc2NDc3Mjk0OSwiZXhwIjoxNzY1Mzc3NzQ5fQ.pVV-2h08UVraFMUdMasLW3knpJ6AyxmiiYi3SxeC1XA"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Updated Event Name for image",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Updated description for description",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/us/Downloads/feature.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/events/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "693038ac27228c2e268cb650"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Join Event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTJmZDMxNjg3YzBkZmQ1MDNmMDQzYmYiLCJlbWFpbCI6ImpvaG5AZXhhbXBsZS5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2NTQ1OTQwMSwiZXhwIjoxNzY2MDY0MjAxfQ.qZg4OSCFA8I6am7l4_1S7XqRkU3kZ0_vm5xHeQirOVM"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/events/join/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"join",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "693038ac27228c2e268cb650"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leave Event☑️",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTJmZDMxNjg3YzBkZmQ1MDNmMDQzYmYiLCJlbWFpbCI6ImpvaG5AZXhhbXBsZS5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2NDc3MzgzMSwiZXhwIjoxNzY1Mzc4NjMxfQ.98aigz1ZcwGAMlhQiO2zU1nYaLRcHGb7ryEYu7IV1OU"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/events/leave/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"leave",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "693038ac27228c2e268cb650"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Event☑️",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTMwMDU4MGU1NzgzYjM2MzkxNzQxZmUiLCJlbWFpbCI6Imhvc3RAZXhhbXBsZS5jb20iLCJyb2xlIjoiaG9zdCIsImlhdCI6MTc2NDc3OTgwNCwiZXhwIjoxNzY1Mzg0NjA0fQ.GrQ7CSGVEixe1vPqYQ55mGYTlDWrGgoZfxsP3JofW10"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/events/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "693043b827228c2e268cb653"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Hosted Events☑️",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTMwMDU4MGU1NzgzYjM2MzkxNzQxZmUiLCJlbWFpbCI6Imhvc3RAZXhhbXBsZS5jb20iLCJyb2xlIjoiaG9zdCIsImlhdCI6MTc2NDc3OTgwNCwiZXhwIjoxNzY1Mzg0NjA0fQ.GrQ7CSGVEixe1vPqYQ55mGYTlDWrGgoZfxsP3JofW10"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/events/hosted",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"hosted"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Joined Events",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTJmZDMxNjg3YzBkZmQ1MDNmMDQzYmYiLCJlbWFpbCI6ImpvaG5AZXhhbXBsZS5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2NDc3MzgzMSwiZXhwIjoxNzY1Mzc4NjMxfQ.98aigz1ZcwGAMlhQiO2zU1nYaLRcHGb7ryEYu7IV1OU"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/events/joined",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"joined"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reviews",
+			"item": [
+				{
+					"name": "Create Review",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTJmZDMxNjg3YzBkZmQ1MDNmMDQzYmYiLCJlbWFpbCI6ImpvaG5AZXhhbXBsZS5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2NTQ1OTQwMSwiZXhwIjoxNzY2MDY0MjAxfQ.qZg4OSCFA8I6am7l4_1S7XqRkU3kZ0_vm5xHeQirOVM"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"event\": \"6937709b8925a6133f14c1da\",\n  \"host\": \"69300580e5783b36391741fe\",\n  \"rating\": 5,\n  \"comment\": \"Amazing event! Well organized and fun.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/reviews/create",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviews",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Review",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTJmZDMxNjg3YzBkZmQ1MDNmMDQzYmYiLCJlbWFpbCI6ImpvaG5AZXhhbXBsZS5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2NDc4MzM4OCwiZXhwIjoxNzY1Mzg4MTg4fQ.mjoHBt9Eck1EvT3w3UGF7ZprUb94kuT8-tdOTBQTebQ"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rating\": 3,\n    \"comment\": \"Amazing event .\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/reviews/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviews",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6930767067395d249f4b95f2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Review",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTJmZDMxNjg3YzBkZmQ1MDNmMDQzYmYiLCJlbWFpbCI6ImpvaG5AZXhhbXBsZS5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2NDc4MzM4OCwiZXhwIjoxNzY1Mzg4MTg4fQ.mjoHBt9Eck1EvT3w3UGF7ZprUb94kuT8-tdOTBQTebQ"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/reviews/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviews",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6930767067395d249f4b95f2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Reviews☑️",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTMwMDU4MGU1NzgzYjM2MzkxNzQxZmUiLCJlbWFpbCI6Imhvc3RAZXhhbXBsZS5jb20iLCJyb2xlIjoiaG9zdCIsImlhdCI6MTc2NTM5NjcxNywiZXhwIjoxNzY2MDAxNTE3fQ.s-UERwdyXXNMd4PZkuSqBXP3AC8tzJHVj0CdtssSt8o",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/reviews/host/:hostId?page=1&limit=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviews",
+								"host",
+								":hostId"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							],
+							"variable": [
+								{
+									"key": "hostId",
+									"value": "69300580e5783b36391741fe"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Event Reviews☑️",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/reviews/event/:eventId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviews",
+								"event",
+								":eventId"
+							],
+							"variable": [
+								{
+									"key": "eventId",
+									"value": "693038ac27228c2e268cb650"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payments",
+			"item": [
+				{
+					"name": "Initialize canceled Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTJmZDMxNjg3YzBkZmQ1MDNmMDQzYmYiLCJlbWFpbCI6ImpvaG5AZXhhbXBsZS5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2NTEyNTI4MCwiZXhwIjoxNzY1NzMwMDgwfQ.3ipSXQbqUIPqUr5d4qoXvqYKWdht-Qt8HM-ZVRaHOj4"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/payment/init-payment/:bookingId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"payment",
+								"init-payment",
+								":bookingId"
+							],
+							"variable": [
+								{
+									"key": "bookingId",
+									"value": "6935c4551dbea51dd83cbba4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Payments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTJmZDMxNjg3YzBkZmQ1MDNmMDQzYmYiLCJlbWFpbCI6ImpvaG5AZXhhbXBsZS5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2NTQ1OTQwMSwiZXhwIjoxNzY2MDY0MjAxfQ.qZg4OSCFA8I6am7l4_1S7XqRkU3kZ0_vm5xHeQirOVM"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/payment/my-payments",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"payment",
+								"my-payments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Host Revenue",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/payments/revenue",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"payments",
+								"revenue"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Booking",
+			"item": [
+				{
+					"name": "Create Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTJmZDMxNjg3YzBkZmQ1MDNmMDQzYmYiLCJlbWFpbCI6ImpvaG5AZXhhbXBsZS5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2NTEyNTI4MCwiZXhwIjoxNzY1NzMwMDgwfQ.3ipSXQbqUIPqUr5d4qoXvqYKWdht-Qt8HM-ZVRaHOj4"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"event\" : \"693038ac27228c2e268cb650\",\r\n    \"guestCount\": 1 \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Booking for event",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTJmZDMxNjg3YzBkZmQ1MDNmMDQzYmYiLCJlbWFpbCI6ImpvaG5AZXhhbXBsZS5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2NTEyNTI4MCwiZXhwIjoxNzY1NzMwMDgwfQ.3ipSXQbqUIPqUr5d4qoXvqYKWdht-Qt8HM-ZVRaHOj4"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"event\" : \"693038ac27228c2e268cb650\",\r\n    \"guestCount\": 2 \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings/my-bookings/:eventId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings",
+								"my-bookings",
+								":eventId"
+							],
+							"variable": [
+								{
+									"key": "eventId",
+									"value": "693038ac27228c2e268cb650"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000/api",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

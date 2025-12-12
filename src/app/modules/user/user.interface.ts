@@ -11,11 +11,11 @@ export interface IUser extends Document {
   fullName: string;
   email: string;
   password: string;
-  role: Role;
+  role?: Role;
   profileImage?: string;
   bio?: string;
   phone?: string;
-  interests: string[];
+  interests?: string[];
   location?: {
     city: string;
     area: string;

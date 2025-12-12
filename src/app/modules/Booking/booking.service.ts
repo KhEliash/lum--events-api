@@ -9,6 +9,7 @@ import { getTransactionId } from "../../utils/getTransactionId";
 import { EventModel } from "../event/event.model";
 import { ISSLCommerz } from "../sslcommerz/sslCommerz.interface";
 import { SSLService } from "../sslcommerz/sslCommerz.service";
+import mongoose from "mongoose";
 
 const createBooking = async (payload: Partial<IBooking>, userId: string) => {
   const transactionId = getTransactionId();
@@ -30,6 +31,22 @@ const createBooking = async (payload: Partial<IBooking>, userId: string) => {
 
     if (!event?.joiningFee) {
       throw new AppError(httpStatus.BAD_REQUEST, "No joiningFee Found!");
+    }
+
+    const existingPayment = await Payment.findOne({
+      booking: {
+        $in: await Booking.find({ user: userId, event: payload.event }).select(
+          "_id"
+        ),
+      },
+      status: { $in: [PaymentStatus.UNPAID, PaymentStatus.PAID] },
+    });
+
+    if (existingPayment) {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        "You already have a pending or completed payment for this event."
+      );
     }
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -102,8 +119,24 @@ const getUserBookings = async () => {
   return {};
 };
 
-const getBookingById = async () => {
-  return {};
+const getBookingById = async (userId: string, eventId: string) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(eventId)) {
+      throw new AppError(400, "Invalid eventId");
+    }
+    const bookings = await Booking.findOne({
+      user: userId,
+      event: eventId,
+      status: "COMPLETE",
+    }).populate("payment");
+
+    if (!bookings) {
+      throw new AppError(404, "No booking found");
+    }
+    return bookings;
+  } catch (error: any) {
+    return error.message || "No bookings found";
+  }
 };
 
 const updateBookingStatus = async () => {

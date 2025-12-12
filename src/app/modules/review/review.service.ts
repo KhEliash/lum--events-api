@@ -46,7 +46,7 @@ const getHostReviews = async (hostId: string, query: any) => {
   const { page = 1, limit = 10 } = query;
   const skip = (page - 1) * limit;
 
-  const reviews = await Review.find({ host: hostId })
+  const reviews = await Review.find({ reviewer: hostId })
     .populate("reviewer", "fullName profileImage")
     .populate("event", "name type date")
     .skip(skip)
