@@ -6,6 +6,9 @@ import { envVars } from "./app/config/env";
 
 let server: Server;
 
+
+
+
 const startServer = async () => {
   try {
     await mongoose.connect(envVars.DB_URL);
