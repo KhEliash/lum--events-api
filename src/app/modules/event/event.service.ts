@@ -135,8 +135,9 @@ const joinEvent = async (eventId: string, userId: string) => {
   const existingBooking = await Booking.findOne({
     user: userId,
     event: eventId,
-    status: BOOKING_STATUS.PENDING || BOOKING_STATUS.COMPLETE, // or PENDING if you want
+    status: BOOKING_STATUS.COMPLETE,
   });
+
   if (existingBooking) {
     const payment = await Payment.findOne({
       booking: existingBooking._id,
@@ -156,7 +157,7 @@ const joinEvent = async (eventId: string, userId: string) => {
 
 const leaveEvent = async (eventId: string, userId: string) => {
   const event = await EventModel.findById(eventId);
- 
+
   if (!event) {
     throw new AppError(404, "Event not found");
   }
