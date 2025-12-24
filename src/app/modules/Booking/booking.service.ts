@@ -39,13 +39,13 @@ const createBooking = async (payload: Partial<IBooking>, userId: string) => {
           "_id"
         ),
       },
-      status: { $in: [PaymentStatus.UNPAID, PaymentStatus.PAID] },
+      status: { $in: [ PaymentStatus.PAID] },
     });
 
     if (existingPayment) {
       throw new AppError(
         httpStatus.BAD_REQUEST,
-        "You already have a pending or completed payment for this event."
+        "You already have a  completed payment for this event."
       );
     }
 
